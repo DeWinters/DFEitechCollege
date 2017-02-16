@@ -15,7 +15,7 @@ namespace DFEitechCollege.Controllers
 
         public ActionResult OpenSubjects()
         {
-            return View();
+            return View(genie.ListSubjects());
         }
 
         public ActionResult CreateSubject(string name="*empty", Boolean higher=false )
@@ -26,6 +26,11 @@ namespace DFEitechCollege.Controllers
         public ActionResult UpdateSubject(int id, string name, Boolean higher=false)
         {
             return View(genie.UpdateSubject(id, name, higher));
+        }
+
+        public ActionResult _ToolSubjects()
+        {
+            return View();
         }
     }
 }

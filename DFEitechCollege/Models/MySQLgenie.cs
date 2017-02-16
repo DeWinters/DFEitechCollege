@@ -65,5 +65,26 @@ namespace DFEitechCollege.Models
             }
             return subject;
         }
+
+        public List<Subject> ListSubjects()
+        {
+            var allSubjects = new List<Subject>();
+            cmd = new MySqlCommand();
+            cmd.Connection = con;
+            con.Open();
+            cmd.CommandText = "SELECT * FROM subject";
+            rdr = cmd.ExecuteReader();
+            while (rdr.Read())
+            {
+                Subject subject = new Subject();
+                subject.SubjectId = rdr.GetInt32(0);
+                subject.SubjectName = rdr.GetString(1);
+                subject.SubjectHigher = rdr.GetBoolean(2);
+                allSubjects.Add(subject);
+            }
+            con.Close();
+
+            return allSubjects;
+        }
     }
 }
