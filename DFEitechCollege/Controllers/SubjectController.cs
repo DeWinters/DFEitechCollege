@@ -3,15 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using DFEitechCollege.Models;
+using MySql.Data.MySqlClient;
 
 namespace DFEitechCollege.Controllers
 {
     public class SubjectController : Controller
     {
-        // GET: Subject
+        MySQLgenie genie = new MySQLgenie();
+
+
         public ActionResult OpenSubjects()
         {
             return View();
+        }
+
+        public ActionResult CreateSubject(string name="*empty", Boolean higher=false )
+        {
+            return View(genie.InsertSubject(name, higher));            
+        }
+
+        public ActionResult UpdateSubject(int id, string name, Boolean higher=false)
+        {
+            return View(genie.UpdateSubject(id, name, higher));
         }
     }
 }

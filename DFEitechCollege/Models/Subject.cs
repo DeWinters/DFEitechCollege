@@ -7,8 +7,8 @@ namespace DFEitechCollege.Models
 {
     public class Subject
     {
-        public int subjectId { get; set; }
-        public string subjectName { get; set; }
-        public Boolean subjectHigher { get; set; }
+        public int SubjectId { get; set; }
+        public string SubjectName { get; set; }
+        public Boolean SubjectHigher { get; set; }
     }
 }

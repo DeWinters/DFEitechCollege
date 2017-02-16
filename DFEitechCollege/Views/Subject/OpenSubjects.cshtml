@@ -1,8 +1,35 @@
-﻿@model DFEitechCollege.Models.Subject
-@{
+﻿@{
     ViewBag.Title = "OpenSubjects";
 }
 
 <h2>OpenSubjects</h2>
-<p>Hello RAZOR C# ASP.NET MVC 5!</p>
+
+<div class="col-md-4">
+    <label for="create">Create New Subject</label>
+    <form name="create" action="CreateSubject">
+        <i>*Enter the NAME of the New Subject.</i><br />
+        <label for="name">Subject Name</label>
+        <input name="name" type="text" />
+        <br /><br />
+        <i>*Toggle HIGHER LEVEL indicator</i><br />
+        <label for="higher">Higher Level</label>
+        <input name="higher" type="checkbox" value="false" /><br />
+        <input type="submit" class="btn btn-default" value="Create Subject &raquo;" />
+    </form>
+    <br />
+</div>
+
+<div class="col-md-4">
+    <label for="update">Update Existing Subject</label>
+    <form name="update" action="UpdateSubject">
+        <label for="id">Subject ID</label>
+        <input name="id" type="text" /><br />
+        <label for="name" type="text">subject Name</label>
+        <input name="name" type="text" />
+        <br /><br />
+        <label for="higher">Higher Level</label>
+        <input name="higher" type="checkbox" value="false" /><br />
+        <input type="submit" class="btn btn-default" value="Create Subject &raquo;" />
+    </form>
+</div>
 
