@@ -1,0 +1,44 @@
+﻿
+
+<div class="row">
+    <h2>Tool Teachers</h2>
+    <div class="col-md-3">
+        <label for="create">Create New Teacher</label>
+        <form name="create" action="CreateTeacher">
+            <i>*Enter the name of the New Teacher.</i><br />
+            <label for="fname">First Name</label>
+            <input name="fname" type="text" />
+            <label for="lname">Last Name</label>
+            <input name="lname" type="text" />
+            <input type="submit" class="btn btn-default" value="Create Teacher &raquo;" />
+        </form>
+        <br />
+    </div>
+
+    <div class="col-md-3">
+        <label for="update">Update Existing Teacher</label>
+        <form name="update" action="UpdateTeacher">
+            <i>* select the ID of the Teacher to Edit. Then enter new details.</i>
+            <label for="id">Teacher ID</label>
+            <input name="id" type="text" /><br />
+
+            <label for="fname">First Name</label>
+            <input name="fname" type="text" />
+
+            <label for="lname">Last Name</label>
+            <input name="lname" type="text" />
+            <input type="submit" class="btn btn-default" value="Update Teacher &raquo;" />
+        </form>
+    </div>
+
+
+    <div class="col-md-3">
+        <label for="delete">Delete Existing Teacher</label>
+        <form name="delete" action="DeleteTeacher">
+            <label for="id">Subject ID</label>
+            <input name="id" type="text" /><br />
+            <input type="submit" class="btn btn-default" value="Delete Teacher &raquo;" />
+        </form>
+    </div>
+</div>
+
