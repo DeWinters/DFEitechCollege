@@ -1,10 +1,11 @@
 ﻿@model IEnumerable<DFEitechCollege.Models.Subject>
 @{
-    ViewBag.Title = "_ListSubjects";
+    ViewBag.Title = "ListSubjects";
     WebGrid wg = new WebGrid(Model);
 }
 
 <div>
+    <p>List Subjects</p>
 @wg.GetHtml(columns: new[]
 {
     wg.Column("SubjectId", header: "ID"),

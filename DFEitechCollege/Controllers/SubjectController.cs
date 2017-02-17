@@ -12,8 +12,12 @@ namespace DFEitechCollege.Controllers
     {
         MySQLgenie genie = new MySQLgenie();
 
+        public ActionResult DeleteSubject(int id=0, string name="*empty", Boolean higher=false)
+        {
+            return View(genie.DeleteSubject(id));
+        }
 
-        public ActionResult OpenSubjects()
+        public ActionResult ListSubjects()
         {
             return View(genie.ListSubjects());
         }

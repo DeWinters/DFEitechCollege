@@ -66,6 +66,39 @@ namespace DFEitechCollege.Models
             return subject;
         }
 
+        public Subject DeleteSubject(int id=0)
+        {
+            var subject = new Subject();
+            if (id != 0)
+            {
+                cmd = new MySqlCommand();
+                cmd.Connection = con;
+                con.Open();
+                cmd.CommandText = "SELECT * FROM subject WHERE subject_id=" +id;
+                rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    subject.SubjectId = rdr.GetInt32(0);
+                    subject.SubjectName = rdr.GetString(1);
+                    subject.SubjectHigher = rdr.GetBoolean(2);;
+                }
+                con.Close();
+                con.Open();
+                
+                cmd.CommandText = "DELETE FROM subject WHERE subject_id= @ID";
+                cmd.Parameters.AddWithValue("@ID", id);
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            else
+            {
+                subject = new Subject() { SubjectId = 0, SubjectName = "Please fill in the editor fields" };
+            }
+
+
+            return subject;
+        }
+
         public List<Subject> ListSubjects()
         {
             var allSubjects = new List<Subject>();
