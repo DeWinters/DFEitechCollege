@@ -1,19 +1,19 @@
-﻿@model IEnumerable<DFEitechCollege.Models.Teacher>
+﻿@model IEnumerable<DFEitechCollege.Models.Student>
 @{
-    ViewBag.Title = "ListTeachers";
+    ViewBag.Title = "ListStudents";
     WebGrid wg = new WebGrid(Model);
 }
 
 <div>
-    <p>List Teachers</p>
+    <p>List Students</p>
     @wg.GetHtml(columns: new[]
 {
-    wg.Column("TeacherId", header: "ID"),
+    wg.Column("StudentId", header: "ID"),
     wg.Column("FName", header: "First Name"),
     wg.Column("LName", header: "Last Name")
 })
 </div>
 
 <div>
-    @Html.Partial("_ToolTeachers")
+    @Html.Partial("_ToolStudents")
 </div>
