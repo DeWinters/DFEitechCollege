@@ -1,0 +1,34 @@
+﻿@model IEnumerable<DFEitechCollege.Models.Workshop>
+@{
+    ViewBag.Title = "ListWorkshops";
+    WebGrid wg = new WebGrid();
+}
+
+<div>
+    All Workshops
+    @foreach (var workshop in Model)
+    {
+        <div>
+            <p>Workshop ID:  @workshop.WorkshopId</p>
+            <p>Subject ID:   @workshop.Course.SubjectId</p>
+            <p>Subject Name: @workshop.Course.SubjectName</p>
+            <p>Year:         @workshop.Year</p>
+            <p>Teacher ID:   @workshop.Instructor.TeacherId</p>
+            <p>Teacher FName:    @workshop.Instructor.FName</p>
+            <p>Teacher LName:    @workshop.Instructor.LName</p>
+        </div>
+
+        <div>
+            @foreach (var student in workshop.Students)
+            {
+                <p>Student ID:  @student.StudentId</p>
+                <p>Student FName:   @student.FName</p>
+                <p>Student LName:   @student.LName</p>
+            }
+        </div>
+    }
+</div>
+
+<div>
+    @Html.Partial("_ToolWorkshops")
+</div>

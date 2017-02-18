@@ -46,7 +46,7 @@ namespace DFEitechCollege.Models
             subject.SubjectId = id;
             subject.SubjectName = name;
             subject.SubjectHigher = higher;
-            if(id != 0 && name != "*empty")
+            if (id != 0 && name != "*empty")
             {
                 try
                 {
@@ -67,7 +67,7 @@ namespace DFEitechCollege.Models
             return subject;
         }
 
-        public Subject DeleteSubject(int id=0)
+        public Subject DeleteSubject(int id = 0)
         {
             var subject = new Subject();
             if (id != 0)
@@ -101,6 +101,34 @@ namespace DFEitechCollege.Models
             else
             {
                 subject = new Subject() { SubjectId = 0, SubjectName = "Please fill in the editor fields" };
+            }
+            return subject;
+        }
+
+        public Subject GetSubject(int id)
+        {
+            var subject = new Subject();
+            if (id != 0)
+            {
+                cmd = new MySqlCommand();
+                try
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                    cmd.CommandText = "SELECT * FROM subject WHERE subject_id=" + id;
+                    rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
+                    {
+                        subject.SubjectId = rdr.GetInt32(0);
+                        subject.SubjectName = rdr.GetString(1);
+                        subject.SubjectHigher = rdr.GetBoolean(2); ;
+                    }
+                    con.Close();
+                }
+                catch (MySqlException e)
+                {
+                    subject.SubjectName = e.ToString();
+                }
             }
             return subject;
         }
@@ -222,6 +250,34 @@ namespace DFEitechCollege.Models
             else
             {
                 teacher = new Teacher() { TeacherId = 0, FName = "Please fill in the editor fields" };
+            }
+            return teacher;
+        }
+
+        public Teacher GetTeacher(int id)
+        {
+            var teacher = new Teacher();
+            if (id != 0)
+            {
+                cmd = new MySqlCommand();
+                try
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                    cmd.CommandText = "SELECT * FROM teacher WHERE teacher_id=" + id;
+                    rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
+                    {
+                        teacher.TeacherId = rdr.GetInt32(0);
+                        teacher.FName = rdr.GetString(1);
+                        teacher.LName = rdr.GetString(2); ;
+                    }
+                    con.Close();
+                }
+                catch (MySqlException e)
+                {
+                    teacher.FName = e.ToString();
+                }
             }
             return teacher;
         }
@@ -348,6 +404,34 @@ namespace DFEitechCollege.Models
             return student;
         }
 
+        public Student GetStudent(int id)
+        {
+            var student = new Student();
+            if (id != 0)
+            {
+                cmd = new MySqlCommand();
+                try
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                    cmd.CommandText = "SELECT * FROM student WHERE student_id=" + id;
+                    rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
+                    {
+                        student.StudentId = rdr.GetInt32(0);
+                        student.FName = rdr.GetString(1);
+                        student.LName = rdr.GetString(2); ;
+                    }
+                    con.Close();
+                }
+                catch (MySqlException e)
+                {
+                    student.FName = e.ToString();
+                }
+            }
+            return student;
+        }
+
 
         public List<Student> ListStudents()
         {
@@ -377,6 +461,203 @@ namespace DFEitechCollege.Models
             }
 
             return allStudents;
+        }
+
+        /** Workshop **************************************************************************/
+        public Workshop InsertWorkshop(int subjectId, int year, int teacherId)
+        {
+            var workshop = new Workshop();
+            workshop.Year = year;
+            workshop.Instructor = GetTeacher(teacherId);
+            workshop.Course = GetSubject(subjectId);
+            
+            if (subjectId != 0 && teacherId != 0)
+            {
+                try
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                    cmd.CommandText = "INSERT INTO workshop (subject_id, year, teacher_id) VALUES(@SUBJECT, @YEAR, @TEACHER)";
+                    cmd.Parameters.AddWithValue("@SUBJECT", subjectId);
+                    cmd.Parameters.AddWithValue("@YEAR", year);
+                    cmd.Parameters.AddWithValue("@Teacher", teacherId);
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
+                catch (MySqlException e)
+                {
+                    workshop.Instructor.FName = e.ToString();
+                }
+            }
+            return workshop;
+        }
+
+        public Workshop Updateworkshop(int workshopId, int subjectId, int year, int teacherId)
+        {
+            var workshop = new Workshop();
+            workshop.WorkshopId = workshopId;
+            if (workshopId != 0 && subjectId !=0 && year !=0)
+            {
+                try
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                    cmd.CommandText = "UPDATE workshop SET subject_id= @SUBJECTID, year= @YEAR, teacher_id= @TEACHERID WHERE workshop_id= @WORKSHOPID";
+                    cmd.Parameters.AddWithValue("@WORKSHOPID", workshopId);
+                    cmd.Parameters.AddWithValue("@SUBJECTID", subjectId);
+                    cmd.Parameters.AddWithValue("@YEAR", year);
+                    cmd.Parameters.AddWithValue("@TEACHERID", teacherId);
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
+                catch (MySqlException e)
+                {
+
+                    Subject subject = new Subject() { SubjectName = e.ToString() };
+                    workshop.Course = subject;                    
+                }
+            }
+            return workshop;
+        }
+
+        public Workshop DeleteWorkshop(int id = 0)
+        {
+            var workshop = new Workshop();
+            if (id != 0)
+            {
+                cmd = new MySqlCommand();
+                try
+                {
+                    workshop = GetWorkshop(id);
+                    
+                    con.Open();
+                    cmd.CommandText = "DELETE FROM workshop WHERE worksop_id= @ID";
+                    cmd.Parameters.AddWithValue("@ID", id);
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
+                catch (MySqlException e)
+                {
+                    Subject subject = new Subject();
+                    subject.SubjectName = e.ToString();
+                    workshop.Course = subject;
+                }
+            }
+            else
+            {
+                Teacher teacher = new Teacher() { FName = "Please fill in the editor fields" };
+                workshop.Instructor = teacher;
+            }
+            return workshop;
+        }
+
+        public Workshop GetWorkshop(int id)
+        {
+            var workshop = new Workshop();
+            if (id != 0)
+            {
+                cmd = new MySqlCommand();
+                try
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                    cmd.CommandText = "SELECT * FROM workshop WHERE workshop_id=" + id;
+                    rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
+                    {
+                        workshop.WorkshopId = rdr.GetInt32(0);
+                        int subjectId = rdr.GetInt32(1);
+                        workshop.Year = rdr.GetInt32(2);
+                        int teacherId = rdr.GetInt32(3);
+                        workshop.Course = GetSubject(subjectId);
+                        workshop.Instructor = GetTeacher(teacherId);
+                    }
+                    con.Close();
+                }
+                catch (MySqlException e)
+                {
+                    Teacher teacher = new Teacher();
+                    teacher.FName = e.ToString();
+                    workshop.Instructor = teacher;
+                }
+            }
+            return workshop;
+        }
+
+        public List<Workshop> ListWorkshops()
+        {
+            var allWorkshops = new List<Workshop>();
+            cmd = new MySqlCommand();
+            MySqlCommand cmd2 = new MySqlCommand();
+            MySqlDataReader rdr2;
+            try
+            {
+                cmd.Connection = con;
+                con.Open();
+                cmd.CommandText = "SELECT * FROM workshop";
+                rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    Workshop workshop = new Workshop();
+                    workshop.WorkshopId = rdr.GetInt32(0);
+                    int subjectId = rdr.GetInt32(1);
+                    workshop.Year = rdr.GetInt32(2);
+                    int teacherId = rdr.GetInt32(3);
+                    workshop.Instructor = GetTeacher(teacherId);
+                    workshop.Course = GetSubject(subjectId);
+                        cmd2.CommandText = "SELECT * FROM workshop_students WHERE workshop_id = " + workshop.WorkshopId;
+                        rdr2 = cmd2.ExecuteReader();
+                        while (rdr2.Read())
+                        {
+                            Student student = new Student();
+                            student.StudentId = rdr2.GetInt32(0);
+                            student.FName = rdr2.GetString(1);
+                            student.LName = rdr2.GetString(2);
+                            workshop.Students.Add(student);
+                        }
+                    allWorkshops.Add(workshop);
+                }
+                con.Close();
+            }
+            catch (MySqlException e)
+            {
+                Subject subject = new Subject();
+                subject.SubjectName = e.ToString();
+                Workshop workshop = new Workshop();
+                workshop.Course = subject;
+                allWorkshops.Add(workshop);
+            }
+
+            return allWorkshops;
+        }
+
+        /** Workshop-Students **************************************************************************/
+        public Workshop InsertWorkshopStudent(int workshopId, int studentId)
+        {
+            var workshop = new Workshop();
+            workshop.Year = year;
+            workshop.Instructor = GetTeacher(teacherId);
+            workshop.Course = GetSubject(subjectId);
+
+            if (subjectId != 0 && teacherId != 0)
+            {
+                try
+                {
+                    cmd.Connection = con;
+                    con.Open();
+                    cmd.CommandText = "INSERT INTO workshop (subject_id, year, teacher_id) VALUES(@SUBJECT, @YEAR, @TEACHER)";
+                    cmd.Parameters.AddWithValue("@SUBJECT", subjectId);
+                    cmd.Parameters.AddWithValue("@YEAR", year);
+                    cmd.Parameters.AddWithValue("@Teacher", teacherId);
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
+                catch (MySqlException e)
+                {
+                    workshop.Instructor.FName = e.ToString();
+                }
+            }
+            return workshop;
         }
 
     }
