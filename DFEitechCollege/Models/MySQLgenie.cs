@@ -9,7 +9,7 @@ namespace DFEitechCollege.Models
     public class MySQLgenie
     {
         MySqlCommand cmd = new MySqlCommand();
-        MySqlConnection con = new MySqlConnection(@"server=localhost;port=3306;User ID=root;password=secret;Database=dfeidata");
+        MySqlConnection con = new MySqlConnection(@"server=testmysqlinst.corprrs97lob.eu-west-1.rds.amazonaws.com;port=3306;User ID=root;password=gyrfalcon5151;Database=eamotest");
         MySqlDataAdapter adp;
         MySqlDataReader rdr;
 
@@ -631,7 +631,7 @@ namespace DFEitechCollege.Models
             return allWorkshops;
         }
 
-        /** Workshop-Students **************************************************************************/
+        /** Workshop-Students **************************************************************************
         public Workshop InsertWorkshopStudent(int workshopId, int studentId)
         {
             var workshop = new Workshop();
@@ -659,6 +659,7 @@ namespace DFEitechCollege.Models
             }
             return workshop;
         }
+    **/
 
     }
 }

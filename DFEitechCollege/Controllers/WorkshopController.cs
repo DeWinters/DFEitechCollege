@@ -28,12 +28,13 @@ namespace DFEitechCollege.Controllers
 
         public ActionResult UpdateWorkshop(int workshopId, int courseId, int year, int teacherId)
         {
-            return View(genie.UpdateWorkshop(workshopId, courseId, year, teacherId));
+            return View();//genie.UpdateWorkshop(workshopId, courseId, year, teacherId));
         }
 
         public ActionResult _ToolWorkshops()
         {
             return View();
         }
+        
     }
 }

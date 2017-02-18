@@ -22,8 +22,9 @@ namespace DFEitechCollege.Controllers
             return View(genie.ListSubjects());
         }
 
-        public ActionResult CreateSubject(string name="*empty", Boolean higher=false )
+        public ActionResult CreateSubject(Boolean higher= false, string name="*empty")
         {
+            
             return View(genie.InsertSubject(name, higher));            
         }
 
