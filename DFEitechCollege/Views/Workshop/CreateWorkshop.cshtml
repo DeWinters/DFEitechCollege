@@ -1,0 +1,23 @@
+﻿@model DFEitechCollege.Models.Workshop
+@{
+    ViewBag.Title = "CreateWorkshop";
+}
+
+<h2>CreateWorkshop</h2>
+<table>
+    <tr>
+        <th>Workshop ID</th>
+        <th>Subject ID</th>
+        <th>Subject</th>
+        <th>Teacher ID</th>
+        <th>Teacher</th>
+    </tr>
+
+    <tr>
+        <td>@Model.WorkshopId</td>
+        <td>@Model.Course.SubjectId</td>
+        <td>@Model.Course.SubjectName</td>
+        <td>@Model.Instructor.TeacherId</td>
+        <td>@Model.Instructor.FName @Model.Instructor.LName</td>
+    </tr>
+</table>

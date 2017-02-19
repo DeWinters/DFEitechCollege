@@ -6,4 +6,6 @@
 <h2>Subject Details:</h2>
 <p>@Model.SubjectName</p>
 <p>@Model.SubjectHigher</p>
+<p>@using (Html.BeginForm("ListSubjects", "Subject"))
+            { <input type="submit" class="btn btn-default" value="Return to Subjects &raquo;" /> }</p>
 

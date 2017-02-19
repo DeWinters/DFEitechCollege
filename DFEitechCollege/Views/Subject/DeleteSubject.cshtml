@@ -3,8 +3,9 @@
     ViewBag.Title = "DeleteSubject";
 }
 
-<h2>DeleteSubject</h2>
+<h2>Deleted Subject:</h2>
 <p>ID:  @Model.SubjectId</p>
 <p>Subject: @Model.SubjectName</p>
 <p>Has been permanently removed.</p>
-
+<p>@using (Html.BeginForm("ListSubjects", "Subject"))
+            { <input type="submit" class="btn btn-default" value="Return to Subjects &raquo;" /> }</p>

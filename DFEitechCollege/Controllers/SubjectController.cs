@@ -4,13 +4,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using DFEitechCollege.Models;
-using MySql.Data.MySqlClient;
 
 namespace DFEitechCollege.Controllers
 {
     public class SubjectController : Controller
     {
-        MySQLgenie genie = new MySQLgenie();
+        SubjectGenie genie = new SubjectGenie();
 
         public ActionResult DeleteSubject(int id=0)
         {
@@ -22,20 +21,20 @@ namespace DFEitechCollege.Controllers
             return View(genie.ListSubjects());
         }
 
-        public ActionResult CreateSubject(Boolean higher= false, string name="*empty")
+        public ActionResult CreateSubject(string name="*empty", Boolean higher=false)
         {
-            
             return View(genie.InsertSubject(name, higher));            
         }
 
-        public ActionResult UpdateSubject(int id, string name, Boolean higher=false)
+        public ActionResult UpdateSubject(int id, string name, Boolean higher1=false)
         {
-            return View(genie.UpdateSubject(id, name, higher));
+            return View(genie.UpdateSubject(id, name, higher1));
         }
 
         public ActionResult _ToolSubjects()
         {
-            return View();
+            var model = new Subject();
+            return View(model);
         }
     }
 }

@@ -1,26 +1,21 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "_ToolSubjects";
 }
-
 <div class="row">
     <h2>Tool Subjects</h2>
     <div class="col-md-3">
         <label for="create">Create New Subject</label>
         <form name="create" action="CreateSubject">
-            <i>*Enter the NAME of the New Subject.</i><br />
-            <label for="name">Subject Name</label>
-            <input name="name" type="text" />
-            <br /><br />
-            <i>*Toggle HIGHER LEVEL indicator</i><br />
+            <label for="name" type="text">subject Name</label>
+            <input name="name" type="text" /><br />
             <label for="higher">Higher Level</label>
-            <input name="higher" type="checkbox" value="thisisset" /><br />
-            <input type="submit" class="btn btn-default" value="Create Subject &raquo;" />
+            <input name="higher" type="checkBox" value="true"/><br />
+            <input type="submit" class="btn btn-default" value="Update Subject &raquo;" />
         </form>
-        <br />
     </div>
 
     <div class="col-md-3">
+
         <label for="update">Update Existing Subject</label>
         <form name="update" action="UpdateSubject">
             <label for="id">Subject ID</label>
@@ -29,7 +24,7 @@
             <input name="name" type="text" />
             <br /><br />
             <label for="higher1">Higher Level</label>
-            <input name="higher1" type="checkbox" value="false" /><br />
+            <input name="higher1" type="checkbox" value="true"/><br />
             <input type="submit" class="btn btn-default" value="Update Subject &raquo;" />
         </form>
     </div>
@@ -39,7 +34,9 @@
         <form name="delete" action="DeleteSubject">
             <label for="id">Subject ID</label>
             <input name="id" type="text" /><br />
+            <input type="submit" class="btn btn-default" value="Delete Subject &raquo;" />
         </form>
     </div>
 </div>
+    
 

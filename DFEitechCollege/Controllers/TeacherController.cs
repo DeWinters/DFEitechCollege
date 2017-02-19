@@ -9,7 +9,7 @@ namespace DFEitechCollege.Controllers
 {
     public class TeacherController : Controller
     {
-        MySQLgenie genie = new MySQLgenie();
+        TeacherGenie genie = new TeacherGenie();
 
         public ActionResult DeleteTeacher(int id = 0)
         {

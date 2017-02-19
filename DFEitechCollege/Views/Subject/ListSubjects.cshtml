@@ -5,7 +5,7 @@
 }
 
 <div>
-    <p>List Subjects</p>
+    <p>All Subjects</p>
 @wg.GetHtml(columns: new[]
 {
     wg.Column("SubjectId", header: "ID"),
@@ -15,7 +15,10 @@
 </div>
 
 <div>
-    @Html.Partial("_ToolSubjects")
+    @{ 
+        
+        @Html.Partial("_ToolSubjects")
+     }
 </div>
 
 

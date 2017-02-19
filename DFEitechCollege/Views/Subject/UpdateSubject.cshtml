@@ -3,8 +3,10 @@
     ViewBag.Title = "UpdateSubject";
 }
 
-<h2>UpdateSubject</h2>
+<h2>Updated Subject:</h2>
 <p>@Model.SubjectId</p>
 <p>@Model.SubjectName</p>
 <p>@Model.SubjectHigher</p>
+<p>@using (Html.BeginForm("ListSubjects", "Subject"))
+            { <input type="submit" class="btn btn-default" value="Return to Subjects &raquo;" /> }</p>
 
