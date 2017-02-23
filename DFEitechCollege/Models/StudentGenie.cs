@@ -11,7 +11,6 @@ namespace DFEitechCollege.Models
         public StudentGenie()
         {
             cmd.Connection = con;
-            con.Open();
         }
 
         ~StudentGenie()
@@ -28,6 +27,7 @@ namespace DFEitechCollege.Models
             {
                 try
                 {
+                    con.Open();
                     cmd.CommandText = "INSERT INTO student (student_fname, student_lname) VALUES(@FNAME, @LNAME)";
                     cmd.Parameters.AddWithValue("@FNAME", fname);
                     cmd.Parameters.AddWithValue("@LNAME", lname);
@@ -36,6 +36,10 @@ namespace DFEitechCollege.Models
                 catch (MySqlException e)
                 {
                     student.FName = e.ToString();
+                }
+                finally
+                {
+                    con.Close();
                 }
             }
             return student;
@@ -51,6 +55,7 @@ namespace DFEitechCollege.Models
             {
                 try
                 {
+                    con.Open();
                     cmd.CommandText = "UPDATE student SET student_fname= @FNAME, student_lname= @LNAME WHERE student_id= @ID";
                     cmd.Parameters.AddWithValue("@FNAME", fname);
                     cmd.Parameters.AddWithValue("@LNAME", lname);
@@ -60,6 +65,10 @@ namespace DFEitechCollege.Models
                 catch (MySqlException e)
                 {
                     student.FName = e.ToString();
+                }
+                finally
+                {
+                    con.Close();
                 }
             }
             return student;
@@ -72,6 +81,7 @@ namespace DFEitechCollege.Models
             {
                 try
                 {
+                    con.Open();
                     cmd.CommandText = "SELECT * FROM student WHERE student_id=" + id;
                     rdr = cmd.ExecuteReader();
                     while (rdr.Read())
@@ -80,6 +90,9 @@ namespace DFEitechCollege.Models
                         student.FName = rdr.GetString(1);
                         student.LName = rdr.GetString(2); ;
                     }
+                    con.Close();
+
+                    con.Open();
                     cmd.CommandText = "DELETE FROM student WHERE student_id= @ID";
                     cmd.Parameters.AddWithValue("@ID", id);
                     cmd.ExecuteNonQuery();
@@ -87,6 +100,10 @@ namespace DFEitechCollege.Models
                 catch (MySqlException e)
                 {
                     student.FName = e.ToString();
+                }
+                finally
+                {
+                    con.Close();
                 }
             }
             else
@@ -103,18 +120,23 @@ namespace DFEitechCollege.Models
             {
                 try
                 {
+                    con.Open();
                     cmd.CommandText = "SELECT * FROM student WHERE student_id=" + id;
                     rdr = cmd.ExecuteReader();
                     while (rdr.Read())
                     {
                         student.StudentId = rdr.GetInt32(0);
                         student.FName = rdr.GetString(1);
-                        student.LName = rdr.GetString(2); ;
+                        student.LName = rdr.GetString(2);
                     }
                 }
                 catch (MySqlException e)
                 {
                     student.FName = e.ToString();
+                }
+                finally
+                {
+                    con.Close();
                 }
             }
             return student;
@@ -126,6 +148,7 @@ namespace DFEitechCollege.Models
             var allStudents = new List<Student>();
             try
             {
+                con.Open();
                 cmd.CommandText = "SELECT * FROM student";
                 rdr = cmd.ExecuteReader();
                 while (rdr.Read())
@@ -143,7 +166,10 @@ namespace DFEitechCollege.Models
                 student.FName = e.ToString();
                 allStudents.Add(student);
             }
-
+            finally
+            {
+                con.Close();
+            }
             return allStudents;
         }
 

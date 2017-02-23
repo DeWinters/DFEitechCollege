@@ -16,6 +16,7 @@ namespace DFEitechCollege.Controllers
             return View(genie.DeleteSubject(id));
         }
 
+        [HttpPost]
         public ActionResult ListSubjects()
         {
             return View(genie.ListSubjects());
@@ -34,7 +35,7 @@ namespace DFEitechCollege.Controllers
         public ActionResult _ToolSubjects()
         {
             var model = new Subject();
-            return View(model);
+            return PartialView(model);
         }
     }
 }

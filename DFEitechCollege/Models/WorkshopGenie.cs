@@ -11,7 +11,6 @@ namespace DFEitechCollege.Models
         public WorkshopGenie()
         {
             cmd.Connection = con;
-            con.Open();
         }
 
         ~WorkshopGenie()
@@ -21,20 +20,20 @@ namespace DFEitechCollege.Models
 
         TeacherGenie teaGenie = new TeacherGenie();
         SubjectGenie subGenie = new SubjectGenie();
-        
+        StudentGenie stuGenie = new StudentGenie();
+        EnrollGenie enrGenie = new EnrollGenie();
+
         public Workshop InsertWorkshop(int subjectId, int year, int teacherId)
         {
             var workshop = new Workshop();
             workshop.Year = year;
-
-            
-           // workshop.Instructor = teaGenie.GetTeacher(teacherId);            
-           // workshop.Course = subGenie.GetSubject(subjectId);
-
+            workshop.Instructor = teaGenie.GetTeacher(teacherId);
+            workshop.Course = subGenie.GetSubject(subjectId);
             if (subjectId != 0 && teacherId != 0)
             {
                 try
                 {
+                    con.Open();
                     cmd.CommandText = "INSERT INTO workshop (subject_id, year, teacher_id) VALUES(@SUBJECT, @YEAR, @TEACHER)";
                     cmd.Parameters.AddWithValue("@SUBJECT", subjectId);
                     cmd.Parameters.AddWithValue("@YEAR", year);
@@ -44,6 +43,10 @@ namespace DFEitechCollege.Models
                 catch (MySqlException e)
                 {
                     workshop.Instructor.FName = e.ToString();
+                }
+                finally
+                {
+                    con.Close();
                 }
             }
             return workshop;
@@ -57,17 +60,23 @@ namespace DFEitechCollege.Models
             {
                 try
                 {
+                    con.Open();
                     cmd.CommandText = "UPDATE workshop SET subject_id= @SUBJECTID, year= @YEAR, teacher_id= @TEACHERID WHERE workshop_id= @WORKSHOPID";
                     cmd.Parameters.AddWithValue("@WORKSHOPID", workshopId);
                     cmd.Parameters.AddWithValue("@SUBJECTID", subjectId);
                     cmd.Parameters.AddWithValue("@YEAR", year);
                     cmd.Parameters.AddWithValue("@TEACHERID", teacherId);
-                    cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();                    
                 }
                 catch (MySqlException e)
                 {
                     Subject subject = new Subject() { SubjectName = e.ToString() };
                     workshop.Course = subject;
+                }
+                finally
+                {
+                    con.Close();
+                    workshop = GetWorkshop(workshopId);
                 }
             }
             return workshop;
@@ -80,6 +89,7 @@ namespace DFEitechCollege.Models
             {
                 try
                 {
+                    con.Open();
                     workshop = GetWorkshop(id);
                     cmd.CommandText = "DELETE FROM workshop WHERE worksop_id= @ID";
                     cmd.Parameters.AddWithValue("@ID", id);
@@ -90,6 +100,10 @@ namespace DFEitechCollege.Models
                     Subject subject = new Subject();
                     subject.SubjectName = e.ToString();
                     workshop.Course = subject;
+                }
+                finally
+                {
+                    con.Close();
                 }
             }
             else
@@ -107,6 +121,7 @@ namespace DFEitechCollege.Models
             {
                 try
                 {
+                    con.Open();
                     cmd.CommandText = "SELECT * FROM workshop WHERE workshop_id=" + id;
                     rdr = cmd.ExecuteReader();
                     while (rdr.Read())
@@ -117,6 +132,7 @@ namespace DFEitechCollege.Models
                         int teacherId = rdr.GetInt32(3);
                         workshop.Course = subGenie.GetSubject(subjectId);
                         workshop.Instructor = teaGenie.GetTeacher(teacherId);
+                        workshop.Students = enrGenie.GetWorkshopStudents(workshop.WorkshopId);
                     }
                 }
                 catch (MySqlException e)
@@ -124,6 +140,10 @@ namespace DFEitechCollege.Models
                     Teacher teacher = new Teacher();
                     teacher.FName = e.ToString();
                     workshop.Instructor = teacher;
+                }
+                finally
+                {
+                    con.Close();
                 }
             }
             return workshop;
@@ -134,6 +154,7 @@ namespace DFEitechCollege.Models
             var allWorkshops = new List<Workshop>();
             try
             {
+                con.Open();
                 cmd.CommandText = "SELECT * FROM workshop";
                 rdr = cmd.ExecuteReader();
                 while (rdr.Read())
@@ -145,18 +166,7 @@ namespace DFEitechCollege.Models
                     int teacherId = rdr.GetInt32(3);
                     workshop.Instructor = teaGenie.GetTeacher(teacherId);
                     workshop.Course = subGenie.GetSubject(subjectId);
-                    /**
-                        cmd2.CommandText = "SELECT * FROM workshop_students WHERE workshop_id = " + workshop.WorkshopId;
-                        rdr2 = cmd2.ExecuteReader();
-                        while (rdr2.Read())
-                        {
-                            Student student = new Student();
-                            student.StudentId = rdr2.GetInt32(0);
-                            student.FName = rdr2.GetString(1);
-                            student.LName = rdr2.GetString(2);
-                            workshop.Students.Add(student);
-                        }
-                **/
+                    workshop.Students = enrGenie.GetWorkshopStudents(workshop.WorkshopId);
                     allWorkshops.Add(workshop);
                 }
             }
@@ -168,39 +178,20 @@ namespace DFEitechCollege.Models
                 workshop.Course = subject;
                 allWorkshops.Add(workshop);
             }
-
+            finally
+            {
+                con.Close();
+            }
             return allWorkshops;
         }
 
-        /** Workshop-Students **************************************************************************
+        /** workshop-student passers **/
+
         public Workshop InsertWorkshopStudent(int workshopId, int studentId)
         {
-            var workshop = new Workshop();
-            workshop.Year = year;
-            workshop.Instructor = GetTeacher(teacherId);
-            workshop.Course = GetSubject(subjectId);
-
-            if (subjectId != 0 && teacherId != 0)
-            {
-                try
-                {
-                    cmd.Connection = con;
-                    con.Open();
-                    cmd.CommandText = "INSERT INTO workshop (subject_id, year, teacher_id) VALUES(@SUBJECT, @YEAR, @TEACHER)";
-                    cmd.Parameters.AddWithValue("@SUBJECT", subjectId);
-                    cmd.Parameters.AddWithValue("@YEAR", year);
-                    cmd.Parameters.AddWithValue("@Teacher", teacherId);
-                    cmd.ExecuteNonQuery();
-                    con.Close();
-                }
-                catch (MySqlException e)
-                {
-                    workshop.Instructor.FName = e.ToString();
-                }
-            }
-            return workshop;
+            enrGenie.InsertWorkshopStudent(workshopId, studentId);
+            return GetWorkshop(workshopId);
         }
-    **/
-
     }
 }
+ 

@@ -18,5 +18,36 @@
 </div>
 
 <div>
+@foreach (var workshop in Model)
+{
+    <table>
+        <tr>
+            <th>WorkShop ID</th>
+            <th>Subject</th>
+            <th>Advanced</th>
+            <th>Year</th>
+            <th>Teacher</th>
+            @foreach (var student in workshop.Students)
+            {
+                <th>Student</th>
+            }
+
+<tr>
+            <td>@workshop.WorkshopId</td>
+            <td>@workshop.Course.SubjectId @workshop.Course.SubjectName</td>
+            <td>@workshop.Course.SubjectHigher</td>
+            <td>@workshop.Year</td>
+            <td>@workshop.Instructor.TeacherId @workshop.Instructor.FName @workshop.Instructor.LName</td>
+            @foreach (var student in workshop.Students)
+            {
+                <td>@student.StudentId @student.LName @student.FName</td>
+            }
+            </tr>            
+    </table>
+    <br /><br />
+}
+ </div>
+
+<div>
     @Html.Partial("_ToolWorkshops")
 </div>

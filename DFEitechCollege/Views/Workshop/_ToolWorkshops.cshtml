@@ -7,9 +7,9 @@
         <form name="create" action="CreateWorkshop">
             <i>*Select Subject and Teacher IDs and add the year.</i><br />
             <label for="courseId">Course ID</label>
-            <input name="courseId" type="text" />
+            <input name="courseId" type="text" /><br />
             <label for="year">Year</label>
-            <input name="year" type="text" />
+            <input name="year" type="text" /><br />
             <label for="teacherId">Teacher Id</label>
             <input name="teacherId" type="text" />
             <input type="submit" class="btn btn-default" value="Create Workshop &raquo;" />
@@ -21,12 +21,12 @@
         <label for="update">Update Existing Workshop</label>
         <form name="update" action="UpdateWorkshop">
             <i>* select the ID of the Workshop to Edit. Then enter new details.</i><br />
-            <label for="workshpId">Workshop ID</label>
-            <input name="id" type="text" style="width: 50px;"/><br />
+            <label for="workshopId">Workshop ID</label>
+            <input name="workshopId" type="text" style="width: 50px;"/><br />
             <label for="courseId">Course ID</label>
-            <input name="courseId" type="text" />
+            <input name="courseId" type="text" /><br />
             <label for="year">Year</label>
-            <input name="year" type="text" />
+            <input name="year" type="text" /><br />
             <label for="teacherId">Teacher Id</label>
             <input name="teacherId" type="text" />
             <input type="submit" class="btn btn-default" value="Update Workshop &raquo;" />
@@ -40,6 +40,18 @@
             <label for="id">workshop ID</label>
             <input name="id" type="text" /><br />
             <input type="submit" class="btn btn-default" value="Delete Workshop &raquo;" />
+        </form>
+    </div>
+
+
+    <div class="col-md-3">
+        <label for="enroll">Place Student in Workshop</label>
+        <form name="enroll" action="InsertWorkshopStudent">
+            <label for="studentId">Student ID</label>
+            <input name="studentId" type="text" /><br />
+            <label for="worksHopId">Workshop ID</label>
+            <input name="workshopId" type="text" /><br />
+            <input type="submit" class="btn btn-default" value="Enroll Student &raquo;" />
         </form>
     </div>
 </div>

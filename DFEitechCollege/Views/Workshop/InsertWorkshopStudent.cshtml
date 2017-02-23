@@ -1,0 +1,34 @@
+﻿@model DFEitechCollege.Models.Workshop
+@{
+    ViewBag.Title = "InsertWorkshopStudent";
+}
+
+<h2>InsertWorkshopStudent</h2>
+
+<table>
+    <tr>
+        <th>WorkShop ID</th>
+        <th>Subject</th>
+        <th>Advanced</th>
+        <th>Year</th>
+        <th>Teacher</th>
+        @foreach (var student in Model.Students)
+        {
+            <th>STudent</th>
+        }
+    </tr>
+    <tr>
+        <td>@Model.WorkshopId</td>
+        <td>@Model.Course.SubjectId @Model.Course.SubjectName</td>
+        <td>@Model.Course.SubjectHigher</td>
+        <td>@Model.Year</td>
+        <td>@Model.Instructor.TeacherId @Model.Instructor.FName @Model.Instructor.LName</td>
+        @foreach (var student in Model.Students)
+        {
+            <td>@student.StudentId @student.LName @student.FName</td>
+        }
+    </tr>
+</table>
+
+
+

@@ -2,12 +2,12 @@
     ViewBag.Title = "_ToolSubjects";
 }
 <div class="row">
-    <h2>Tool Subjects</h2>
+    <h2 style="text-align: center;">Subject Tools:</h2>
     <div class="col-md-3">
         <label for="create">Create New Subject</label>
         <form name="create" action="CreateSubject">
-            <label for="name" type="text">subject Name</label>
-            <input name="name" type="text" /><br />
+            <label for="name" type="text">Subject Name</label>
+            <input name="name" type="text" style="width: 140px;"/><br />
             <label for="higher">Higher Level</label>
             <input name="higher" type="checkBox" value="true"/><br />
             <input type="submit" class="btn btn-default" value="Update Subject &raquo;" />
@@ -20,9 +20,8 @@
         <form name="update" action="UpdateSubject">
             <label for="id">Subject ID</label>
             <input name="id" type="text" /><br />
-            <label for="name" type="text">subject Name</label>
-            <input name="name" type="text" />
-            <br /><br />
+            <label for="name" type="text">Subject Name</label>
+            <input name="name" type="text" style="width: 140px;" /><br />
             <label for="higher1">Higher Level</label>
             <input name="higher1" type="checkbox" value="true"/><br />
             <input type="submit" class="btn btn-default" value="Update Subject &raquo;" />

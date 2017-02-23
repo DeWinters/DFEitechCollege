@@ -11,13 +11,13 @@ namespace DFEitechCollege.Models
         public SubjectGenie()
         {
             cmd.Connection = con;
-            con.Open();
         }
 
         ~SubjectGenie()
         {
             con.Close();
         }
+
         public Subject InsertSubject(string name, Boolean higher)
         {
             var subject = new Subject();
@@ -25,8 +25,10 @@ namespace DFEitechCollege.Models
             subject.SubjectHigher = higher;
             if (name != "*empty")
             {
+
                 try
                 {
+                    con.Open();
                     cmd.CommandText = "INSERT INTO subject (subject_name, subject_higher) VALUES(@NAME, @HIGHER)";
                     cmd.Parameters.AddWithValue("@NAME", name);
                     cmd.Parameters.AddWithValue("@HIGHER", higher);
@@ -35,6 +37,9 @@ namespace DFEitechCollege.Models
                 catch (MySqlException e)
                 {
                     subject.SubjectName = e.ToString();
+                }finally
+                {
+                    con.Close();
                 }
             }
             return subject;
@@ -50,6 +55,7 @@ namespace DFEitechCollege.Models
             {
                 try
                 {
+                    con.Open();
                     cmd.CommandText = "UPDATE subject SET subject_name= @NAME, subject_higher= @HIGHER WHERE subject_id= @ID";
                     cmd.Parameters.AddWithValue("@NAME", name);
                     cmd.Parameters.AddWithValue("@HIGHER", higher);
@@ -60,6 +66,10 @@ namespace DFEitechCollege.Models
                 catch (MySqlException e)
                 {
                     subject.SubjectName = e.ToString();
+                }
+                finally
+                {
+                    con.Close();
                 }
             }
             return subject;
@@ -72,6 +82,7 @@ namespace DFEitechCollege.Models
             {
                 try
                 {
+                    con.Open();
                     cmd.CommandText = "SELECT * FROM subject WHERE subject_id=" + id;
                     rdr = cmd.ExecuteReader();
                     while (rdr.Read())
@@ -80,6 +91,9 @@ namespace DFEitechCollege.Models
                         subject.SubjectName = rdr.GetString(1);
                         subject.SubjectHigher = rdr.GetBoolean(2); ;
                     }
+                    con.Close();
+
+                    con.Open();
                     cmd.CommandText = "DELETE FROM subject WHERE subject_id= @ID";
                     cmd.Parameters.AddWithValue("@ID", id);
                     cmd.ExecuteNonQuery();
@@ -87,6 +101,9 @@ namespace DFEitechCollege.Models
                 catch (MySqlException e)
                 {
                     subject.SubjectName = e.ToString();
+                }finally
+                {
+                    con.Close();
                 }
             }
             else
@@ -103,6 +120,7 @@ namespace DFEitechCollege.Models
             {
                 try
                 {
+                    con.Open();
                     cmd.CommandText = "SELECT * FROM subject WHERE subject_id=" + id;
                     rdr = cmd.ExecuteReader();
                     while (rdr.Read())
@@ -115,10 +133,12 @@ namespace DFEitechCollege.Models
                 catch (MySqlException e)
                 {
                     subject.SubjectName = e.ToString();
+                }finally
+                {
+                    con.Close();
                 }
             }
-            con.Close();
-            con.Open();
+            
             return subject;
         }
 
@@ -127,6 +147,7 @@ namespace DFEitechCollege.Models
             var allSubjects = new List<Subject>();
             try
             {
+                con.Open();
                 cmd.CommandText = "SELECT * FROM subject";
                 rdr = cmd.ExecuteReader();
                 while (rdr.Read())
@@ -143,6 +164,10 @@ namespace DFEitechCollege.Models
                 Subject subject = new Subject();
                 subject.SubjectName = e.ToString();
                 allSubjects.Add(subject);
+            }
+            finally
+            {
+                con.Close();
             }
 
             return allSubjects;

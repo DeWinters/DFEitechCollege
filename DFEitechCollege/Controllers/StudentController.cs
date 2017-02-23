@@ -16,6 +16,7 @@ namespace DFEitechCollege.Controllers
             return View(genie.DeleteStudent(id));
         }
 
+        [HttpPost]
         public ActionResult ListStudents()
         {
             return View(genie.ListStudents());
@@ -31,6 +32,7 @@ namespace DFEitechCollege.Controllers
             return View(genie.UpdateStudent(id, fname, lname));
         }
 
+        [HttpPost]
         public ActionResult _ToolStudents()
         {
             return View();

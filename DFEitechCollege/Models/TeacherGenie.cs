@@ -11,7 +11,6 @@ namespace DFEitechCollege.Models
         public TeacherGenie()
         {
             cmd.Connection = con;
-            con.Open();
         }
 
         ~TeacherGenie()
@@ -28,6 +27,7 @@ namespace DFEitechCollege.Models
             {
                 try
                 {
+                    con.Open();
                     cmd.CommandText = "INSERT INTO teacher (teacher_fname, teacher_lname) VALUES(@FNAME, @LNAME)";
                     cmd.Parameters.AddWithValue("@FNAME", fname);
                     cmd.Parameters.AddWithValue("@LNAME", lname);
@@ -36,6 +36,9 @@ namespace DFEitechCollege.Models
                 catch (MySqlException e)
                 {
                     teacher.FName = e.ToString();
+                }finally
+                {
+                    con.Close();
                 }
             }
             return teacher;
@@ -51,6 +54,7 @@ namespace DFEitechCollege.Models
             {
                 try
                 {
+                    con.Open();
                     cmd.CommandText = "UPDATE teacher SET teacher_fname= @FNAME, teacher_lname= @LNAME WHERE teacher_id= @ID";
                     cmd.Parameters.AddWithValue("@FNAME", fname);
                     cmd.Parameters.AddWithValue("@LNAME", lname);
@@ -60,6 +64,10 @@ namespace DFEitechCollege.Models
                 catch (MySqlException e)
                 {
                     teacher.FName = e.ToString();
+                }
+                finally
+                {
+                    con.Close();
                 }
             }
             return teacher;
@@ -72,6 +80,7 @@ namespace DFEitechCollege.Models
             {
                 try
                 {
+                    con.Open();
                     cmd.CommandText = "SELECT * FROM teacher WHERE teacher_id=" + id;
                     rdr = cmd.ExecuteReader();
                     while (rdr.Read())
@@ -80,6 +89,9 @@ namespace DFEitechCollege.Models
                         teacher.FName = rdr.GetString(1);
                         teacher.LName = rdr.GetString(2); ;
                     }
+                    con.Close();
+
+                    con.Open();
                     cmd.CommandText = "DELETE FROM teacher WHERE teacher_id= @ID";
                     cmd.Parameters.AddWithValue("@ID", id);
                     cmd.ExecuteNonQuery();
@@ -87,6 +99,9 @@ namespace DFEitechCollege.Models
                 catch (MySqlException e)
                 {
                     teacher.FName = e.ToString();
+                }finally
+                {
+                    con.Close();
                 }
             }
             else
@@ -103,6 +118,7 @@ namespace DFEitechCollege.Models
             {
                 try
                 {
+                    con.Open();
                     cmd.CommandText = "SELECT * FROM teacher WHERE teacher_id=" + id;
                     rdr = cmd.ExecuteReader();
                     while (rdr.Read())
@@ -116,13 +132,15 @@ namespace DFEitechCollege.Models
                 {
                     teacher.FName = e.ToString();
                 }
+                finally
+                {
+                    con.Close();
+                }
             }
             else
             {
                 teacher = new Teacher() { TeacherId = 0, FName = "Please fill in the Teacher ID field" };
-            }
-            con.Close();
-            con.Open();
+            }            
             return teacher;
         }
 
@@ -132,6 +150,7 @@ namespace DFEitechCollege.Models
             var allTeachers = new List<Teacher>();
             try
             {
+                con.Open();
                 cmd.CommandText = "SELECT * FROM teacher";
                 rdr = cmd.ExecuteReader();
                 while (rdr.Read())
@@ -148,6 +167,10 @@ namespace DFEitechCollege.Models
                 Teacher teacher = new Teacher();
                 teacher.FName = e.ToString();
                 allTeachers.Add(teacher);
+            }
+            finally
+            {
+                con.Close();
             }
             return allTeachers;
         }
